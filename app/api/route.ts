@@ -20,16 +20,16 @@ export async function POST(req) {
   const body = await req.json();
   const supabase = await createClient();
 
-  const get_users = async () => {
-    const { data: users = [] } = await supabase.from("users").select("*");
-    return users;
+  const get_Name = async () => {
+    const { data: Name = [] } = await supabase.from("Name").select("*");
+    return Name;
   }
 
   try {
     const resp = await client.chat({
-      messages: [{role: "system", content: "Ты умеешь получать список пользователей при помощи функции get_users"}, { role: 'user', content: body.message }],
+      messages: [{role: "system", content: "Ты умеешь получать список пользователей при помощи функции get_Name"}, { role: 'user', content: body.message }],
       functions: [{
-        name: 'get_users',
+        name: 'get_Name',
         description: 'Получает список всех пользователей',
         parameters: {
           type: 'object',
@@ -46,9 +46,9 @@ export async function POST(req) {
 
     if (resp.choices[0].message.function_call) {
       const functionToCall = resp.choices[0].message.function_call.name;
-      if (functionToCall === "get_users") {
-        const users = await get_users();
-        return NextResponse.json({ type: "func", message: users, status: 200})
+      if (functionToCall === "get_Name") {
+        const Name = await get_Name();
+        return NextResponse.json({ type: "func", message: Name, status: 200})
       }
     } else {
       return NextResponse.json({ message: resp.choices[0].message.content, status: 200})

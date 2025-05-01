@@ -21,7 +21,7 @@ export default function ChatPage() {
   // Хотим ответ от гигачата?
   const [value, setValue] = useState("");
   const [response, setResponse] = useState("");
-  const [users, setUsers] = useState([]);
+  const [Name, setName] = useState([]);
 
   const sendQuestion = async () => {
     setResponse("Загружаю");
@@ -31,17 +31,16 @@ export default function ChatPage() {
     })})
 
     const data = await res.json();
-    if (data.type === "func") setUsers(data.message);
+    if (data.type === "func") setName(data.message);
     else setResponse(data.message);
   }
 
   return (
     <div>
-      <div>{users.map((user) => <div>{user.name}</div>)}</div>
+      <div>{Name.map((user) => <div>{user.name}</div>)}</div>
       <div>{response}</div>
       <textarea className='border-black' value={value} onChange={(e) => setValue(e.target.value)} />
       <button className='bg-red-500' type="button" onClick={() => sendQuestion()}>Отправить</button>
     </div>
   )
 }
-
